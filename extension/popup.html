@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ImpulseGuard</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      width: 360px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+      padding: 20px;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .logo {
+      font-size: 48px;
+      margin-bottom: 8px;
+    }
+    
+    h1 {
+      font-size: 24px;
+      color: #92400E;
+    }
+    
+    .tagline {
+      font-size: 11px;
+      color: #B45309;
+      margin-top: 4px;
+    }
+    
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 8px;
+    }
+    
+    .wage-input-container {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    
+    .currency-symbol {
+      background: #F3F4F6;
+      padding: 12px;
+      border-radius: 12px;
+      font-weight: 700;
+      color: #10B981;
+      font-size: 16px;
+    }
+    
+    input {
+      flex: 1;
+      padding: 12px;
+      border: 2px solid #E5E7EB;
+      border-radius: 12px;
+      font-size: 14px;
+    }
+    
+    input:focus {
+      outline: none;
+      border-color: #10B981;
+    }
+    
+    button {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #10B981, #059669);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+    
+    .stats-section {
+      margin-bottom: 16px;
+    }
+    
+    .stats-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #92400E;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    
+    .stat {
+      text-align: center;
+      background: #F9FAFB;
+      padding: 12px;
+      border-radius: 12px;
+    }
+    
+    .stat-value {
+      font-size: 24px;
+      font-weight: bold;
+    }
+    
+    .stat-label {
+      font-size: 11px;
+      color: #6B7280;
+      margin-top: 4px;
+    }
+    
+    .saved-stat .stat-value {
+      color: #10B981;
+    }
+    
+    .spent-stat .stat-value {
+      color: #F59E0B;
+    }
+    
+    .divider {
+      height: 1px;
+      background: #E5E7EB;
+      margin: 16px 0;
+    }
+    
+    .total-savings {
+      background: linear-gradient(135deg, #ECFDF5, #D1FAE5);
+      border-radius: 16px;
+      padding: 16px;
+      text-align: center;
+      margin-top: 12px;
+    }
+    
+    .total-savings-label {
+      font-size: 12px;
+      color: #065F46;
+      margin-bottom: 8px;
+    }
+    
+    .total-savings-value {
+      font-size: 28px;
+      font-weight: 800;
+      color: #10B981;
+    }
+    
+    .status {
+      background: #ECFDF5;
+      text-align: center;
+      padding: 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      color: #065F46;
+      margin-bottom: 12px;
+    }
+    
+    .reset-btn {
+      background: transparent;
+      border: 1px solid #DC2626;
+      color: #DC2626;
+      margin-top: 12px;
+    }
+    
+    .reset-btn:hover {
+      background: #DC2626;
+      color: white;
+    }
+    
+    .save-success {
+      background: #10B981;
+      color: white;
+      text-align: center;
+      padding: 8px;
+      border-radius: 8px;
+      font-size: 12px;
+      margin-top: 10px;
+      animation: fadeOut 2s ease forwards;
+    }
+    
+    @keyframes fadeOut {
+      0% { opacity: 1; }
+      70% { opacity: 1; }
+      100% { opacity: 0; visibility: hidden; }
+    }
+    
+    /* ── Dashboard Button ─────────────────────────── */
+    .dashboard-btn {
+      background: linear-gradient(135deg, #1D4ED8, #1e40af);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 13px;
+      margin-top: 0;
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .dashboard-btn:hover {
+      background: linear-gradient(135deg, #1e40af, #1e3a8a);
+      box-shadow: 0 4px 12px rgba(29, 78, 216, 0.3);
+    }
+
+    .dashboard-btn::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.1) 50%, transparent 60%);
+      animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    .sync-status {
+      text-align: center;
+      font-size: 10px;
+      color: #6B7280;
+      padding: 4px 0;
+      margin-bottom: 4px;
+    }
+
+    .sync-status.synced {
+      color: #10B981;
+    }
+
+    .sync-status.error {
+      color: #EF4444;
+    }
+    
+    .nav-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">🛡️</div>
+    <h1>ImpulseGuard</h1>
+    <div class="tagline">Stop impulse buying. Track what you save.</div>
+  </div>
+  
+  <div class="nav-buttons">
+    <div class="sync-status" id="syncStatus">⏳ Syncing...</div>
+    <button id="openDashboardBtn" class="dashboard-btn">📊 View Full Dashboard</button>
+  </div>
+
+  <div class="card">
+    <label>💰 Your Hourly Wage (₹)</label>
+    <div class="wage-input-container">
+      <span class="currency-symbol">₹</span>
+      <input type="number" id="hourlyWage" placeholder="500" step="50" value="500">
+    </div>
+    <button id="saveBtn" style="margin-top: 12px;">💾 Save Settings</button>
+    <div id="saveMessage" style="display: none;"></div>
+  </div>
+  
+  <div class="card">
+    <div class="stats-section">
+      <div class="stats-title">
+        <span>✨</span>
+        <span>Money You've SAVED</span>
+      </div>
+      <div class="stats-grid">
+        <div class="stat saved-stat">
+          <div class="stat-value" id="moneySavedByCancelling">₹0</div>
+          <div class="stat-label">By Canceling Purchases</div>
+        </div>
+        <div class="stat saved-stat">
+          <div class="stat-value" id="hoursSavedByCancelling">0</div>
+          <div class="stat-label">Hours Saved</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="divider"></div>
+    
+    <div class="stats-section">
+      <div class="stats-title">
+        <span>🛍️</span>
+        <span>Money You've SPENT</span>
+      </div>
+      <div class="stats-grid">
+        <div class="stat spent-stat">
+          <div class="stat-value" id="moneySpent">₹0</div>
+          <div class="stat-label">On Mindful Purchases</div>
+        </div>
+        <div class="stat spent-stat">
+          <div class="stat-value" id="hoursSpent">0</div>
+          <div class="stat-label">Hours Invested</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="total-savings">
+      <div class="total-savings-label">🎉 Total Money Saved by Mindful Decisions</div>
+      <div class="total-savings-value" id="totalSavings">₹0</div>
+      <div style="font-size: 11px; color: #065F46; margin-top: 8px;">
+        Every canceled purchase adds to your savings!
+      </div>
+    </div>
+    
+    <button id="refreshStatsBtn" style="background: #F3F4F6; color: #374151; margin-top: 8px; font-size: 12px; padding: 8px; border-radius: 12px; border: none;">🔄 Refresh Stats</button>
+    <button id="resetStatsBtn" class="reset-btn">🗑️ Reset All Stats</button>
+  </div>
+  
+  <div class="status">
+    ✅ Active on Amazon, Flipkart, Myntra, Meesho<br>
+    <span style="font-size: 10px;">🛡️ Shows when you click BUY NOW or ADD TO CART</span><br>
+    <span style="font-size: 10px; color: #10B981;">✨ Cancel a purchase to see savings update instantly!</span>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>
